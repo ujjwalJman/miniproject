@@ -1,0 +1,9 @@
+{
+	"name": "newwaveminiproject",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f64106b7-dd46-4ab0-9c05-eaac7ffe8f50",
+		"tenantId": "2800c0a0-70e9-49be-8733-faeaa6aced99"
+	}
+}
