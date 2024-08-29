@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "raw",
-			"table": "inventory"
+			"table": "inventories"
 		}
 	}
 }
