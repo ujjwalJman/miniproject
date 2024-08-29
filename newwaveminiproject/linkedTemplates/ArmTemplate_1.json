@@ -13,6 +13,215 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable4",
+								"type": "DatasetReference"
+							},
+							"name": "inventory"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTableWarehouse",
+								"type": "DatasetReference"
+							},
+							"name": "warehouse"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTableLocation",
+								"type": "DatasetReference"
+							},
+							"name": "location"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable3",
+								"type": "DatasetReference"
+							},
+							"name": "product"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable5",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "join2"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "join3"
+						},
+						{
+							"name": "select3"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          InventoryID as string,",
+						"          InventoryAvailable as long,",
+						"          MinStockLevel as long,",
+						"          MaxStockLevel as long,",
+						"          ReorderPoint as long,",
+						"          WarehouseID as string,",
+						"          ProductID as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> inventory",
+						"source(output(",
+						"          WarehouseID as string,",
+						"          WarehouseName as string,",
+						"          isRefrigerated as boolean,",
+						"          LocationID as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> warehouse",
+						"source(output(",
+						"          LocationID as string,",
+						"          LocationName as string,",
+						"          LocationAddress as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> location",
+						"source(output(",
+						"          ProductID as string,",
+						"          ProductCode as string,",
+						"          BarCode as long,",
+						"          ProductName as string,",
+						"          ProductDescription as string,",
+						"          ProductCategory as string,",
+						"          CostPrice as double,",
+						"          SellPrice as double,",
+						"          MaxretailPrice as string,",
+						"          ReorderQuantity as integer,",
+						"          PackedWeight as integer,",
+						"          PackedHeight as integer,",
+						"          PackedWidth as integer,",
+						"          PackedDepth as integer,",
+						"          Refrigerated as boolean",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> product",
+						"warehouse, location join(warehouse@LocationID == location@LocationID,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 select(mapColumn(",
+						"          WarehouseID,",
+						"          WarehouseName,",
+						"          isRefrigerated,",
+						"          LocationID = warehouse@LocationID,",
+						"          LocationID = location@LocationID,",
+						"          LocationName,",
+						"          LocationAddress",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"inventory, select1 join(inventory@WarehouseID == select1@WarehouseID,",
+						"     joinType:'left',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join2",
+						"join2 select(mapColumn(",
+						"          InventoryID,",
+						"          InventoryAvailable,",
+						"          MinStockLevel,",
+						"          MaxStockLevel,",
+						"          ReorderPoint,",
+						"          WarehouseID = inventory@WarehouseID,",
+						"          ProductID,",
+						"          WarehouseID = select1@WarehouseID,",
+						"          WarehouseName,",
+						"          isRefrigerated,",
+						"          LocationID,",
+						"          LocationName,",
+						"          LocationAddress",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2, product join(select2@ProductID == product@ProductID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join3",
+						"join3 select(mapColumn(",
+						"          InventoryID,",
+						"          InventoryAvailable,",
+						"          MinStockLevel,",
+						"          MaxStockLevel,",
+						"          ReorderPoint,",
+						"          WarehouseID,",
+						"          ProductID = select2@ProductID,",
+						"          WarehouseName,",
+						"          isRefrigerated,",
+						"          LocationID,",
+						"          LocationName,",
+						"          LocationAddress,",
+						"          ProductID = product@ProductID,",
+						"          ProductCode,",
+						"          BarCode,",
+						"          ProductName,",
+						"          ProductDescription,",
+						"          ProductCategory,",
+						"          CostPrice,",
+						"          SellPrice,",
+						"          MaxretailPrice,",
+						"          ReorderQuantity,",
+						"          PackedWeight,",
+						"          PackedHeight,",
+						"          PackedWidth,",
+						"          PackedDepth,",
+						"          Refrigerated",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select3",
+						"select3 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/prepCount')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -32,13 +241,15 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "prep",
+								"referenceName": "dataflow1",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"source1": {},
-									"sink1": {},
-									"sink2": {}
+									"inventory": {},
+									"warehouse": {},
+									"location": {},
+									"product": {},
+									"sink1": {}
 								}
 							},
 							"staging": {},
@@ -55,7 +266,58 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/prepfact')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"inventory": {},
+									"warehouse": {},
+									"location": {},
+									"product": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
 		}
 	]
 }
