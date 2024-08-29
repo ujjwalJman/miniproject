@@ -1,5 +1,5 @@
 {
-	"name": "Sampledata",
+	"name": "raw_scrape_data",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage1",
