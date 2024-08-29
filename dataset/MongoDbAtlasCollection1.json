@@ -9,7 +9,7 @@
 		"type": "MongoDbAtlasCollection",
 		"schema": [],
 		"typeProperties": {
-			"collection": "Location"
+			"collection": "Product"
 		}
 	}
 }
