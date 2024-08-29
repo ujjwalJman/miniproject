@@ -1,0 +1,452 @@
+{
+	"name": "Ingestionpipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Products",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MongoDbAtlasSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBatchSize": 1000,
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']['$oid']"
+								},
+								"sink": {
+									"name": "ProductID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProductCode']"
+								},
+								"sink": {
+									"name": "ProductCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BarCode']"
+								},
+								"sink": {
+									"name": "BarCode",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProductName']"
+								},
+								"sink": {
+									"name": "ProductName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProductDescription']"
+								},
+								"sink": {
+									"name": "ProductDescription",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProductCategory']"
+								},
+								"sink": {
+									"name": "ProductCategory"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CostPrice']['$numberDouble']"
+								},
+								"sink": {
+									"name": "CostPrice",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SellPrice']['$numberDouble']"
+								},
+								"sink": {
+									"name": "SellPrice",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MaxretailPrice']['$numberDouble']"
+								},
+								"sink": {
+									"name": "MaxretailPrice"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ReorderQuantity']['$numberLong']"
+								},
+								"sink": {
+									"name": "ReorderQuantity",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PackedWeight']['$numberDouble']"
+								},
+								"sink": {
+									"name": "PackedWeight",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PackedHeight']['$numberDouble']"
+								},
+								"sink": {
+									"name": "PackedHeight",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PackedWidth']['$numberDouble']"
+								},
+								"sink": {
+									"name": "PackedWidth",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PackedDepth']['$numberDouble']"
+								},
+								"sink": {
+									"name": "PackedDepth",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Refrigerated']"
+								},
+								"sink": {
+									"name": "Refrigerated",
+									"type": "Boolean"
+								}
+							}
+						],
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MongoDbAtlasCollection1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable3",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy Warehouse",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MongoDbAtlasSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']['$oid']"
+								},
+								"sink": {
+									"name": "WarehouseID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['WarehouseName']"
+								},
+								"sink": {
+									"name": "WarehouseName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['isRefrigerated']"
+								},
+								"sink": {
+									"name": "isRefrigerated",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['LocationID']['$oid']"
+								},
+								"sink": {
+									"name": "LocationID",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MongoDbAtlasCollection2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTableWarehouse",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy Inventory",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MongoDbAtlasSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']['$oid']"
+								},
+								"sink": {
+									"name": "InventoryID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['InventoryAvailable']['$numberLong']"
+								},
+								"sink": {
+									"name": "InventoryAvailable",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MinStockLevel']['$numberLong']"
+								},
+								"sink": {
+									"name": "MinStockLevel",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MaxStockLevel']['$numberLong']"
+								},
+								"sink": {
+									"name": "MaxStockLevel",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ReorderPoint']['$numberLong']"
+								},
+								"sink": {
+									"name": "ReorderPoint",
+									"type": "Int64"
+								}
+							},
+							{
+								"source": {
+									"path": "$['WarehouseID']['$oid']"
+								},
+								"sink": {
+									"name": "WarehouseID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ProductID']['$oid']"
+								},
+								"sink": {
+									"name": "ProductID",
+									"type": "String"
+								}
+							}
+						],
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MongoDbAtlasCollection3",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable4",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy Location",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "MongoDbAtlasSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']['$oid']"
+								},
+								"sink": {
+									"name": "LocationID",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['LocationName']"
+								},
+								"sink": {
+									"name": "LocationName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['LocationAddress']"
+								},
+								"sink": {
+									"name": "LocationAddress"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MongoLocation",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTableLocation",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
