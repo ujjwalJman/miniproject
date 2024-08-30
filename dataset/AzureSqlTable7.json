@@ -9,7 +9,7 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "raw",
+			"schema": "prep",
 			"table": "final_data"
 		}
 	}
