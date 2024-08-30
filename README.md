@@ -1,6 +1,5 @@
-# Data Mini Project
+# Data Engineering Mini-Project
 
-Data Engineering Mini-Project
 <ol>
     <li>Migrate an existing full stack project to the cloud platform.
         <ul>
