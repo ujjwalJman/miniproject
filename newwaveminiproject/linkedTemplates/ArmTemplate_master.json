@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
 		},
+		"AzureSqlDatabase3_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase3'"
+		},
 		"GitHub1_credential": {
 			"type": "secureString",
 			"metadata": "Secure string for 'credential' of 'GitHub1'"
@@ -22,10 +26,6 @@
 		"MongoDbAtlas1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'MongoDbAtlas1'"
-		},
-		"AzureSqlDatabase3_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AzureSqlDatabase3'"
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
 			"type": "string",
@@ -39,14 +39,6 @@
 			"type": "string",
 			"defaultValue": "ujjwal"
 		},
-		"GitHub1_properties_typeProperties_username": {
-			"type": "string",
-			"defaultValue": "ujjwalJman"
-		},
-		"MongoDbAtlas1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "Mesh"
-		},
 		"AzureSqlDatabase3_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "newwavesqlserver.database.windows.net"
@@ -58,6 +50,14 @@
 		"AzureSqlDatabase3_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "ujjwal"
+		},
+		"GitHub1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "ujjwalJman"
+		},
+		"MongoDbAtlas1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Mesh"
 		},
 		"containerUri": {
 			"type": "string",
@@ -92,14 +92,14 @@
 					"AzureSqlDatabase1_password": {
 						"value": "[parameters('AzureSqlDatabase1_password')]"
 					},
+					"AzureSqlDatabase3_password": {
+						"value": "[parameters('AzureSqlDatabase3_password')]"
+					},
 					"GitHub1_credential": {
 						"value": "[parameters('GitHub1_credential')]"
 					},
 					"MongoDbAtlas1_connectionString": {
 						"value": "[parameters('MongoDbAtlas1_connectionString')]"
-					},
-					"AzureSqlDatabase3_password": {
-						"value": "[parameters('AzureSqlDatabase3_password')]"
 					},
 					"AzureSqlDatabase1_properties_typeProperties_server": {
 						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
@@ -110,12 +110,6 @@
 					"AzureSqlDatabase1_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]"
 					},
-					"GitHub1_properties_typeProperties_username": {
-						"value": "[parameters('GitHub1_properties_typeProperties_username')]"
-					},
-					"MongoDbAtlas1_properties_typeProperties_database": {
-						"value": "[parameters('MongoDbAtlas1_properties_typeProperties_database')]"
-					},
 					"AzureSqlDatabase3_properties_typeProperties_server": {
 						"value": "[parameters('AzureSqlDatabase3_properties_typeProperties_server')]"
 					},
@@ -124,6 +118,12 @@
 					},
 					"AzureSqlDatabase3_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDatabase3_properties_typeProperties_userName')]"
+					},
+					"GitHub1_properties_typeProperties_username": {
+						"value": "[parameters('GitHub1_properties_typeProperties_username')]"
+					},
+					"MongoDbAtlas1_properties_typeProperties_database": {
+						"value": "[parameters('MongoDbAtlas1_properties_typeProperties_database')]"
 					}
 				}
 			},
